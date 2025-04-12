@@ -3,21 +3,19 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Login from './pages/Auth/login';
 import SignUp from './pages/Auth/SignUp';
 import Dashboard from './pages/Dashboard/dashboard';
-import * as jwt_decode from 'jwt-decode';
 
 function App() {
   const [logged, setLogged] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
+    const user = localStorage.getItem("user");
+    if (user) {
       setLogged(true);
     } else {
-      setLogged(false);  
+      setLogged(false);
     }
   }, []);
 
-  
   if (logged === null) {
     return <div>Loading...</div>;
   }
@@ -25,9 +23,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={logged ? <Dashboard /> : <Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/" element={logged ? <Dashboard logged={logged}/> : <Login logged={logged} setLogged={setLogged} />} />
+        <Route path="/login" element={<Login logged={logged} setLogged={setLogged} />} />
+        <Route path="/signup" element={<SignUp logged={logged} setLogged={setLogged} />} />
       </Routes>
     </Router>
   );

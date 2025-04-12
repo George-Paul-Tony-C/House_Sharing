@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://localhost:5000';
+export const BASE_URL = 'http://localhost:8080';
 
 export const API_PATHS = {
     AUTH : {
@@ -7,6 +7,13 @@ export const API_PATHS = {
 
         REGISTER : "/api/auth/register",
         GET_USER_INFO : "/api/auth/getUser",
+    },
+
+    USER : {
+        LOGIN : "api/user/login",
+        SIGNUP : "api/user/signup",
+        GET_ALL_USER : "api/user/allUser",
+        DELETE : (id) => `api/user/delete/${id}`
     },
 
     DASHBOARD : {

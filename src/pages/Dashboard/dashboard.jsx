@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../Layouts/dashboardLayout';
 import Hero from './Hero';
 import FilterableRooms from './FilterableRooms';
@@ -36,7 +36,7 @@ const Dashboard = () => {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout >
       <div className="p-6">
         <Hero roomSummary={roomSummary} />
         <FilterableRooms updateRoomSummary={updateRoomSummary} />
