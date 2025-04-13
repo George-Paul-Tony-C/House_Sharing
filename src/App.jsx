@@ -5,6 +5,9 @@ import SignUp from './pages/Auth/SignUp';
 import Home from './pages/Dashboard/Home';
 import HouseList from './pages/House/HouseList';
 import { ToastContainer } from 'react-toastify';
+import HousePage from './pages/House/HousePage';
+import UserPage from './pages/Auth/UserPage';
+import Rooms from './pages/Dashboard/Rooms';
 
 function App() {
   return (
@@ -22,6 +25,12 @@ function App() {
 
         {/* Houses page route */}
         <Route path='/houses' element={<HouseList />} />
+
+        <Route path="/houses/:houseId" element={<HousePage />} />
+
+        <Route path="/house/:houseId" element={<Rooms/>} />
+
+        <Route path='/profile' element={<UserPage/>} />
       </Routes>
     </div>
   );
