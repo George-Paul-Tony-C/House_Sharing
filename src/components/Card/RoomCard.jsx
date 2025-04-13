@@ -6,7 +6,7 @@ const RoomCard = ({ house, room }) => {
       {room.images ? (
         <img
           src={room.images}
-          alt={`Room in ${house.house_address}`}
+          alt={`Room in ${house.address}`}
           className="w-full h-full object-cover transition duration-500 ease-in-out group-hover:opacity-50"
         />
       ) : (

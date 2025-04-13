@@ -1,52 +1,30 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../utils/axiosInstance';
-import { API_PATHS } from '../utils/apiPaths';
 
-// Create a Context for Auth
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [logged, setLogged] = useState(null);
+  const [logged, setLogged] = useState(false);
   const navigate = useNavigate();
 
-  // Check if the token exists and validate it on app mount
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      validateToken(token);
+    const user = localStorage.getItem('userId');
+    if (user) {
+      setLogged(true); 
     } else {
       setLogged(false);
     }
-  }, []);
+  }, []);  
 
-  const validateToken = async (token) => {
-    try {
-      const response = await axiosInstance.get(API_PATHS.AUTH.VALIDATE_TOKEN, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.data.isValid) {
-        setLogged(true);
-      } else {
-        setLogged(false);
-      }
-    } catch (error) {
-      console.log(error);
-      setLogged(false);
-    }
-  };
-
-  const login = (token) => {
-    localStorage.setItem('token', token);
-    setLogged(true);
+  const login = (name) => {
+    localStorage.setItem('userId', name);
+    setLogged(true); 
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    setLogged(false);
+    localStorage.removeItem('userId');
     navigate('/login');
+    setLogged(false);  
   };
 
   return (

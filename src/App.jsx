@@ -1,33 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import React from 'react';
+import {Route, Routes} from 'react-router-dom';
 import Login from './pages/Auth/login';
 import SignUp from './pages/Auth/SignUp';
-import Dashboard from './pages/Dashboard/dashboard';
+import Home from './pages/Dashboard/Home';
+import HouseList from './pages/House/HouseList';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
-  const [logged, setLogged] = useState(null);
-
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      setLogged(true);
-    } else {
-      setLogged(false);
-    }
-  }, []);
-
-  if (logged === null) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <Router>
+    <div className='w-full'>
+      <ToastContainer/>
       <Routes>
-        <Route path="/" element={logged ? <Dashboard logged={logged}/> : <Login logged={logged} setLogged={setLogged} />} />
-        <Route path="/login" element={<Login logged={logged} setLogged={setLogged} />} />
-        <Route path="/signup" element={<SignUp logged={logged} setLogged={setLogged} />} />
+        {/* Home page route */}
+        <Route path="/" element={<Home />} />
+        
+        {/* Login page route */}
+        <Route path="/login" element={<Login />} />
+        
+        {/* Sign up page route */}
+        <Route path="/signup" element={<SignUp />} />
+
+        {/* Houses page route */}
+        <Route path='/houses' element={<HouseList />} />
       </Routes>
-    </Router>
+    </div>
   );
 }
 

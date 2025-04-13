@@ -13,7 +13,12 @@ export const API_PATHS = {
         LOGIN : "api/user/login",
         SIGNUP : "api/user/signup",
         GET_ALL_USER : "api/user/allUser",
-        DELETE : (id) => `api/user/delete/${id}`
+        DELETE : (id) => `api/user/delete/${id}`,
+        GET_USER_HOUSES: '/api/user/:userId/houses',
+    },
+
+    HOUSE : {
+        ADD_HOUSE : "api/house/add"
     },
 
     DASHBOARD : {

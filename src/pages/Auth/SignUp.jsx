@@ -1,20 +1,23 @@
-import React, { useState , useEffect} from 'react';
+import React, { useContext, useState } from 'react';
 import AuthLayout from '../../Layouts/authLayout';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { AuthContext } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
 
-const SignUp = ({logged , setLogged}) => {
+const SignUp = () => {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   // State to handle form inputs
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    ph_no: '', 
+    ph_no: '',
     address: '',
   });
 
@@ -30,32 +33,32 @@ const SignUp = ({logged , setLogged}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axiosInstance.post(API_PATHS.USER.SIGNUP, formData);        
-        
-        if (response.status === 200) {
-            localStorage.setItem('user', formData.user_email);
-            setLogged(true);
-            navigate('/'); 
-        } else {
-            alert('SignUp failed: ' + (response.data.message || 'Unknown error'));
-        }
+      const response = await axiosInstance.post(API_PATHS.USER.SIGNUP, formData);
+
+      if (response.status === 200) {
+        const { message, user } = response.data;
+        toast.success(message);
+        login(user.userId);
+        navigate('/');
+      } else {
+        toast.error('SignUp failed: ' + (response.data.message || 'Unknown error'));
+      }
     } catch (error) {
-        console.log(error);
-        if (error.response) {
-            alert('Error Signing in: ' + error.response.data.message || error.response.statusText);
-        } else if (error.request) {
-            alert('Network error. Please check your connection.');
+      console.log(error);
+      if (error.response) {
+        if (error.response.status === 400 && error.response.data === 'Email is already in use.') {
+          toast.error('Email is already in use. Please login instead.');
+          navigate('/login');
         } else {
-            alert('Unexpected error: ' + error.message);
+          toast.error('Error Signing Up: ' + error.response.data.message || error.response.statusText);
         }
+      } else if (error.request) {
+        toast.error('Network error. Please check your connection.');
+      } else {
+        toast.error('Unexpected error: ' + error.message);
+      }
     }
   };
-
-  useEffect(() => {
-    if (logged) {
-      navigate('/'); 
-    }
-  }, [logged, navigate]);
 
   return (
     <SignUpLayout>
@@ -149,22 +152,22 @@ const SignUpLayout = ({ children }) => {
   const pageVariants = {
     initial: {
       opacity: 0.5,
-      x : -100
+      x: -100,
     },
     animate: {
       opacity: 1,
-      x : 0
+      x: 0,
     },
     exit: {
       opacity: 0.5,
-      x : 100
+      x: 100,
     },
   };
 
   const pageTransition = {
-    duration : 0.5 ,
-    ease : "easeInOut",
-  }
+    duration: 0.5,
+    ease: 'easeInOut',
+  };
 
   return (
     <motion.div
@@ -173,7 +176,7 @@ const SignUpLayout = ({ children }) => {
       animate="animate"
       exit="exit"
       transition={pageTransition}
-      className=" flex items-center justify-center w-full h-full scale-[88%]"
+      className="flex items-center justify-center w-full h-full scale-[88%]"
     >
       {children}
     </motion.div>

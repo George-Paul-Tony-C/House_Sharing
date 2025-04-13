@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import AuthLayout from '../../Layouts/authLayout';
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { toast, ToastContainer } from 'react-toastify';
 
-const Login = ({logged , setLogged}) => {
+const Login = () => {
+  const { login } = useContext(AuthContext); 
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     user_email: '',
-    user_password: ''
+    user_password: '',
   });
 
   const handleInputChange = (e) => {
@@ -24,41 +26,32 @@ const Login = ({logged , setLogged}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axiosInstance.post(API_PATHS.USER.LOGIN, formData);
+      const response = await axiosInstance.post(API_PATHS.USER.LOGIN, formData);
+      
+      if (response.status === 200) {
+        const { message, user } = response.data;
         
-        // Check if the response is valid
-        if (response.status === 200) {
-            localStorage.setItem('user', formData.user_email);
-            setLogged(true);
-            navigate('/'); // Redirect to the dashboard after successful login
-        } else {
-            alert('Login failed: ' + (response.data.message || 'Unknown error'));
-        }
+        toast.success(message);
+        login(user.userId);  
+        navigate('/');  
+      } else {
+        toast('Login failed: ' + (response.data.message || 'Unknown error'));
+      }
     } catch (error) {
-        console.log(error);
-        // Handle the case where there is a network error or CORS error
-        if (error.response) {
-            // Display the error response message from the backend
-            alert('Error logging in: ' + error.response.data.message || error.response.statusText);
-        } else if (error.request) {
-            alert('Network error. Please check your connection.');
-        } else {
-            alert('Unexpected error: ' + error.message);
-        }
+      console.log(error);
+      if (error.response) {
+        toast('Error logging in: ' + error.response.data.message || error.response.statusText);
+      } else if (error.request) {
+        toast('Network error. Please check your connection.');
+      } else {
+        toast('Unexpected error: ' + error.message);
+      }
     }
   };
 
-  
-
-  useEffect(() => {
-    if (logged) {
-      navigate('/'); 
-    }
-  }, [logged, navigate]);
-
   return (
     <LoginLayout>
-      <div className="flex w-full h-full gap-5 items-center justify-center">
+      <div className="flex w-full gap-5 items-center justify-center">
         <div className="w-[70%] not-md:w-[100%] flex flex-col items-center justify-center">
           <div className="text-white p-2 rounded-2xl items-center justify-center flex border-2 border-gray-200 drop-shadow-lg">
             <h1 className="font-bold text-xl text-blue-800">Login</h1>
@@ -132,7 +125,7 @@ const LoginLayout = ({ children }) => {
       animate="animate"
       exit="exit"
       transition={pageTransition}
-      className=" flex items-center justify-center w-full h-full scale-[88%]"
+      className=" flex items-center justify-center w-full max-h-screen scale-[88%]"
     >
       {children}
     </motion.div>
