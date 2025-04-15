@@ -1,7 +1,8 @@
 import React from 'react';
 import DashboardLayout from '../../Layouts/dashboardLayout';
 import { Link, useNavigate } from 'react-router-dom';
-import AllHouses from './AllHouses';
+import AllHouses from '../House/AllHouses';
+
 
 const Home = () => {
 

@@ -5,6 +5,7 @@ import { API_PATHS } from '../../utils/apiPaths';
 
 import { User, MapPin, Mail, Phone, Shield, LogOut, Edit, Camera } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const UserPage = () => {
     const [user, setUser] = useState(null);
@@ -21,7 +22,7 @@ const UserPage = () => {
         const userId = localStorage.getItem("userId");
         try {
         const response = await axiosInstance.get(API_PATHS.USER.GET_USER(userId));
-        const { user, message } = response.data;
+        const { user } = response.data;
         setUser(user);
         setError(null);
         } catch (error) {
@@ -98,6 +99,15 @@ const UserPage = () => {
                     </button>
                   </div>
                 </div>
+              </div>
+
+              {/* Bookings */}
+              <div className="bg-white rounded-xl shadow-md overflow-hidden mt-6">
+              <Link to='/bookings' className=''>
+                <div className="flex items-center justify-center m-4 rounded-lg bg-blue-700 text-white ">
+                  <h2 className='p-2 font-medium text-lg'>List of Bookings</h2>
+                </div>
+              </Link>
               </div>
               
               {/* Security Card */}

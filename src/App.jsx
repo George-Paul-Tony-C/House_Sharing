@@ -1,15 +1,31 @@
-import React from 'react';
-import {Route, Routes} from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import {Route, Routes, useNavigate} from 'react-router-dom';
 import Login from './pages/Auth/login';
 import SignUp from './pages/Auth/SignUp';
 import Home from './pages/Dashboard/Home';
-import HouseList from './pages/House/HouseList';
 import { ToastContainer } from 'react-toastify';
-import HousePage from './pages/House/HousePage';
-import UserPage from './pages/Auth/UserPage';
-import Rooms from './pages/Dashboard/Rooms';
+import UserPage from './pages/User/UserPage';
+import UserBookings from './pages/Booking/UserBookings';
+import UserHouses from './pages/House/UserHouses';
+import UserHousePage from './pages/House/UserHousePage';
+import AllHousePage from './pages/House/AllHousePage';
+import UserRoom from './pages/Room/User_Room';
+import RoomPage from './pages/Room/RoomPage';
+import { AuthContext } from './context/AuthContext';
 
 function App() {
+  const navigate = useNavigate();
+
+  const {logged} = useContext(AuthContext);
+
+  useEffect(() => {
+    if(logged){
+      navigate('/');
+    } else {
+      navigate('/login')
+    }
+  },[logged])
+
   return (
     <div className='w-full'>
       <ToastContainer/>
@@ -24,13 +40,20 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
 
         {/* Houses page route */}
-        <Route path='/houses' element={<HouseList />} />
+        <Route path='/houses' element={<UserHouses />} />
 
-        <Route path="/houses/:houseId" element={<HousePage />} />
+        <Route path="/houses/:houseId" element={<UserHousePage />} />
 
-        <Route path="/house/:houseId" element={<Rooms/>} />
+        <Route path="/house/:houseId" element={<AllHousePage/>} />
 
         <Route path='/profile' element={<UserPage/>} />
+
+        <Route path='/rooms/:roomId' element={<RoomPage />} />
+      
+        <Route path='/room/:roomId' element={<UserRoom />} />
+
+        <Route path='/bookings' element={<UserBookings/>} />
+      
       </Routes>
     </div>
   );
