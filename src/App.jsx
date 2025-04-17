@@ -12,6 +12,7 @@ import AllHousePage from './pages/House/AllHousePage';
 import UserRoom from './pages/Room/User_Room';
 import RoomPage from './pages/Room/RoomPage';
 import { AuthContext } from './context/AuthContext';
+import Bookings from './pages/Booking/Bookings';
 
 function App() {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ function App() {
       
         <Route path='/room/:roomId' element={<UserRoom />} />
 
-        <Route path='/bookings' element={<UserBookings/>} />
+        <Route path='/bookings' element={<Bookings/>} />
       
       </Routes>
     </div>

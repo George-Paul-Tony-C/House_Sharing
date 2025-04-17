@@ -1,9 +1,10 @@
+// RoomsBookings.jsx
 import React, { useState } from 'react';
 import { Calendar, Clock, Home, Loader, MapPin, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DetailedBookingsModal from './DetailedBookingsPage';
 
-const UserBookings = ({bookings, loading, error, handleCancelBooking}) => {
+const RoomsBookings = ({bookings, loading, error, handleCancelBooking}) => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -192,4 +193,4 @@ const UserBookings = ({bookings, loading, error, handleCancelBooking}) => {
   );
 };
 
-export default UserBookings;
+export default RoomsBookings;

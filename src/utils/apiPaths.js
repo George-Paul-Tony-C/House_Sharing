@@ -20,7 +20,8 @@ export const API_PATHS = {
 
     ROOM : {
         ADD_ROOM : "/api/room/add",
-        GET_ROOM : (roomId) => `/api/room/${roomId}`
+        GET_ROOM : (roomId) => `/api/room/${roomId}`,
+        ALL_ROOM : "/api/room/allRooms"
     },
 
     REVIEWS : {
@@ -34,6 +35,7 @@ export const API_PATHS = {
         USER_BOOKINGS : (userId) => `/api/user/bookings/${userId}`,
         CANCEL_BOOKING : (bookingId) => `/api/booking/cancel/${bookingId}`,
         GET_ROOM_BOOKINGS : (roomId) => `/api/room/bookings/${roomId}`,
+        OWNER_ROOMS_BOOKINGS : (userId) => `/api/booking/rooms/${userId}`,
     },
 
     IMAGE : {

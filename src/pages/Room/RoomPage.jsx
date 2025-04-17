@@ -263,6 +263,7 @@ const RoomPage = () => {
               room={room} 
               averageRating={averageRating} 
               reviewsCount={reviews.length} 
+              handleBookNow={handleBookNow} 
             />
             
             <ReviewsSection 

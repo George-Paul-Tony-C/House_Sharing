@@ -1,32 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from '../../Layouts/dashboardLayout';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AllHouses from '../House/AllHouses';
+import AllRooms from '../Room/AllRooms';
 
+import ContentCard from '../../components/Dashboard/ContentCard';
+import TabNavigation from '../../components/Dashboard/TabNavigation';
+import Footer from '../../components/Dashboard/Footer';
+import Header from '../../components/Dashboard/Header';
 
 const Home = () => {
-
+  const [activeTab, setActiveTab] = useState('houses'); // Default to houses tab
   const navigate = useNavigate();
 
-  const handleHouses = () => {
-    console.log("Navigating to /houses...");
-    navigate('/houses');  // This should trigger navigation
-  };
-  
+  const tabs = [
+    { id: 'houses', label: 'Houses' },
+    { id: 'rooms', label: 'Rooms' }
+  ];
 
   return (
     <DashboardLayout>
-      <div className="bg-blue-50 h-full p-6">
-        <div className=' flex justify-between items-center'>
-          <h1 className="text-blue-700 font-bold text-2xl">Hello Everyone</h1>
-      
-          <div className='flex items-center mt-4 gap-2'>
-            <button onClick={handleHouses} className='text-white bg-blue-700 p-3 rounded-lg' >Your Houses </button>
-          </div>
+      <div className="flex flex-col min-h-screen bg-gray-50">
+        {/* Header */}
+        <Header
+          onViewHouses={() => navigate('/houses')}
+        />
+        
+        {/* Main Content */}
+        <div className="flex-grow px-6 py-8">
+          <ContentCard>
+            {/* Tab Navigation */}
+            <TabNavigation 
+              tabs={tabs} 
+              activeTab={activeTab} 
+              onChange={setActiveTab} 
+            />
+            
+            {/* Tab Content */}
+            <div className="p-4">
+              {activeTab === 'houses' && <AllHouses />}
+              {activeTab === 'rooms' && <AllRooms />}
+            </div>
+          </ContentCard>
         </div>
-        <AllHouses />
+        
+        {/* Footer */}
+        <Footer />
       </div>
-      
     </DashboardLayout>
   );
 };
